@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#111a2b">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Endless Country — an AI agent that writes country songs (and new disasters)</title>
+<meta name="description" content="An AI agent that learns the lesson from every country song, applies it, and writes the next song about what went wrong instead. Episode 2: What Will the Dog Think?">
+<link rel="canonical" href="https://endlesscountry.com/">
+<meta property="og:type" content="video.other">
+<meta property="og:site_name" content="Endless Country">
+<meta property="og:title" content="What Will the Dog Think? — Endless Country, episode 2">
+<meta property="og:description" content="An AI agent that learns the lesson from every country song, then writes the next disaster. The dog is watching.">
+<meta property="og:url" content="https://endlesscountry.com/">
+<meta property="og:image" content="https://endlesscountry.com/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:video" content="https://endlesscountry.com/what-will-the-dog-think.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://endlesscountry.com/share.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&family=Bitter:ital,wght@0,400;0,600;0,800;1,400&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* A denim record sleeve. One wide column: the idea, the case, then the film and the liner notes. */
+:root {
+  --bg: #111a2b;        /* night denim */
+  --surface: #182338;
+  --ink: #e8edf5;
+  --muted: #9eabc2;
+  --gold: #e0ac3a;      /* belt-buckle brass */
+  --rust: #e0775f;      /* barn red */
+  --groove: #07080b;
+  --rule: #2a3854;
+  color-scheme: dark;
+  --display: "Rye", "Rockwell", Georgia, serif;
+  --body: "Bitter", Georgia, "Times New Roman", serif;
+  --mono: "Courier Prime", "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.05rem/1.6 var(--body); }
+a { color: var(--rust); }
+.wrap { max-width: 900px; margin: 0 auto; padding-block: 48px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 72px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; max-width: 62ch; }
+.eyebrow { font: 700 .78rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--rust); }
+section { display: grid; gap: 20px; }
+/* The poster carries the film's title, so its heading is for screen readers only. */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* The case file belongs to the film above it: half the usual gap between sections. */
+.wrap > .case-file { margin-top: -36px; }
+/* Grid items default to min-width: auto, so the code block's long lines widened the whole page. */
+.wrap > *, section > * { min-width: 0; }
+html, body { overflow-x: clip; }
+h2 { font: 400 clamp(1.6rem, 4vw, 2.2rem)/1.15 var(--display); }
+
+/* Hero */
+.hero { display: grid; gap: 22px; }
+.hero h1 { font: 400 clamp(2.1rem, 6.4vw, 3.9rem)/1.05 var(--display); }
+.hero .answer { font: 800 clamp(1.3rem, 3.2vw, 1.8rem)/1.25 var(--body); }
+.hero .answer em { font-style: normal; color: var(--gold); }
+.hero .lede { color: var(--muted); }
+
+/* Film */
+.film { display: grid; gap: 12px; }
+.film video { width: 100%; aspect-ratio: 3 / 2; display: block; background: #000; border-radius: 6px;
+  box-shadow: 0 14px 40px rgb(0 0 0 / .3); }
+.film .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 .85rem/1.4 var(--mono); color: var(--muted); }
+
+.btn { font: 700 .85rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+  background: transparent; box-shadow: inset 0 0 0 1px var(--rule); border: 0; border-radius: 4px; padding: 12px 16px; text-decoration: none; display: inline-block; }
+.btn:hover { box-shadow: inset 0 0 0 1px var(--rust); color: var(--rust); }
+.btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+.under { display: flex; justify-content: space-between; align-items: center; gap: 14px 24px; flex-wrap: wrap; }
+/* Our own play button over the poster, the same in every browser (Chrome shows none of its own); the player's controls
+   take over once it plays. */
+.play-btn { position: absolute; inset: 0; margin: auto; width: 84px; height: 84px; border-radius: 50%; border: 0; padding: 0;
+  display: grid; place-items: center; cursor: pointer; color: #fff; background: rgb(7 8 11 / .55);
+  box-shadow: 0 0 0 2px rgb(255 255 255 / .75), 0 10px 30px rgb(0 0 0 / .4); transition: background .15s, transform .15s; }
+.play-btn svg { width: 38px; height: 38px; margin-left: 5px; }
+.play-btn:hover { background: rgb(184 74 42 / .85); transform: scale(1.06); }
+.play-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+.play-btn[hidden] { display: none; }
+@media (max-width: 520px) { .play-btn { width: 64px; height: 64px; } .play-btn svg { width: 28px; height: 28px; } }
+/* Shown when the film ends: Watch again, and the share row, over the end card. */
+.player { position: relative; }
+/* One row across the top: the end card's text fills the middle of the frame and its URL the bottom. */
+.ended { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap;
+  align-content: flex-start; gap: 12px 28px; padding: 7% 16px 0;
+  background: rgb(7 8 11 / .5); border-radius: 6px; color: #e8edf5; }
+.ended[hidden] { display: none; }
+.ended .again-btn { color: #e8edf5; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .45); display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 20px; font-size: .95rem; background: rgb(0 0 0 / .35); }
+.ended .again-btn:hover { color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+.ended .again-btn svg { width: 18px; height: 18px; }
+.ended .share a, .ended .share button { color: #e8edf5; border-color: rgb(255 255 255 / .35); background: rgb(0 0 0 / .35); }
+.ended .share a:hover, .ended .share button:hover { color: var(--gold); border-color: var(--gold); }
+.ended .share-label, .ended .share-said { color: #c9d2e0; }
+@media (max-width: 520px) { .ended { padding-top: 14px; gap: 10px; flex-wrap: nowrap; }
+  .ended .again-btn { padding: 9px 12px; font-size: .72rem; gap: 7px; } .ended .again-btn svg { width: 14px; height: 14px; }
+  .ended .share { gap: 4px; flex-wrap: nowrap; } .ended .share a, .ended .share button { width: 32px; height: 32px; }
+  .ended .share-label { display: none; } }
+
+
+/* Share row (ported from drivine.org's Share.astro; icons are embabel-hub's) */
+.share { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.share-label { margin-right: 4px; font: 700 .78rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.share a, .share button { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border-radius: 999px;
+  border: 1px solid var(--rule); background: transparent; color: var(--ink); cursor: pointer; transition: border-color .15s, color .15s; }
+.share a:hover, .share button:hover, .share a:focus-visible, .share button:focus-visible { color: var(--rust); border-color: var(--rust); }
+.share svg { width: 15px; height: 15px; }
+.share-said { font: 400 .82rem/1 var(--mono); color: var(--muted); margin-left: 4px; }
+.share-said:empty { position: absolute; margin: 0; }
+
+/* Loop */
+.loop { list-style: none; margin: 0; padding: 0; display: grid; counter-reset: step; }
+.loop li { display: grid; grid-template-columns: 3.2rem minmax(0, 1fr); gap: 16px; padding: 18px 0; border-top: 1px solid var(--rule); }
+.loop li::before { counter-increment: step; content: counter(step); font: 400 1.9rem/1 var(--display); color: var(--gold); }
+.loop li strong { display: block; font-weight: 800; }
+.loop .again { border-top: 2px solid var(--ink); }
+.loop .again::before { content: "↻"; counter-increment: none; color: var(--rust); }
+
+/* Case file */
+.case { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.case > div { padding: 20px 22px; display: grid; gap: 8px; align-content: start; background: var(--surface); }
+.case > div + div { border-left: 1px solid var(--rule); }
+@media (max-width: 560px) { .case > div + div { border-left: 0; border-top: 1px solid var(--rule); } }
+.case .k { font: 700 .72rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.case .v { font-weight: 600; }
+.case .insight .v { font: 400 1.35rem/1.2 var(--display); color: var(--rust); }
+.lyrics { font: italic 400 1.05rem/1.7 var(--body); border-left: 3px solid var(--gold); padding-left: 20px; margin: 0; }
+.lyrics p + p { margin-top: 14px; }
+.lyrics cite { display: block; margin-top: 12px; font: normal 400 .8rem/1 var(--mono); color: var(--muted); }
+
+/* Vinyl + learn */
+.note { border: 1px solid var(--rule); border-radius: 6px; padding: 24px; display: grid; gap: 12px; background: var(--surface); }
+.note.soon { border: 2px dashed var(--gold); }
+
+pre { margin: 0; overflow-x: auto; background: var(--groove); color: #d9e2ef; border-radius: 6px; padding: 20px; font: 400 .85rem/1.55 var(--mono); }
+/* Kotlin highlighting: highlight.js run once at build time (no script on the page); colours from the site's palette. */
+.hljs-comment { color: #8f9bb0; font-style: italic; }
+.hljs-meta { color: #e0ac3a; }
+.hljs-keyword { color: #e0775f; }
+.hljs-string { color: #d9c08f; }
+.hljs-title { color: #f3ead8; }
+.hljs-type, .hljs-title.class_ { color: #9cc3e6; }
+.stack { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; font: 400 .92rem/1.45 var(--body); margin: 0; }
+.stack dt { font: 700 .78rem/1.8 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stack dd { margin: 0; }
+@media (max-width: 520px) { .stack { grid-template-columns: minmax(0, 1fr); } .stack dd { margin-bottom: 8px; } }
+footer { font: 400 .82rem/1.6 var(--mono); color: var(--muted); border-top: 1px solid var(--rule); padding-top: 20px; display: grid; gap: 6px; }
+
+</style>
+<!-- Page views, without cookies: GoatCounter (free for non-commercial sites). -->
+<script data-goatcounter="https://jasperblues.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">A Jasper Blues side-quest</div>
+    <h1>Has your country playlist become tiresome and repetitive?</h1>
+    <p class="answer">With AI, we have solved that. <em>Now it never ends.</em></p>
+    <p class="lede">An AI agent that listens to a country song, works out what the protagonist should have done, makes him do it, and then writes the song about what went wrong instead. <strong>Forever.</strong></p>
+  </header>
+
+
+
+
+  <section aria-labelledby="how">
+    <div class="eyebrow">How it works</div>
+    <h2 id="how">Our hero gets wise. It doesn't help.</h2>
+    <ol class="loop">
+      <li><div><strong>Listen.</strong> The agent takes the last song and finds the misfortune.</div></li>
+      <li><div><strong>Learn the lesson.</strong> It works out the one insight that would have prevented every bit of it.</div></li>
+      <li><div><strong>Apply it.</strong> Our protagonist acts on the insight. The old disaster never happens.</div></li>
+      <li><div><strong>Suffer anew.</strong> Curing heart disease doesn't cure death. A brand-new disaster arrives, often caused by the very wisdom that prevented the last one.</div></li>
+      <li><div><strong>Release.</strong> A new song with vocals, a film clip and the cover art.</div></li>
+      <li class="again"><div><strong>Repeat.</strong> The planner never reaches a state where the protagonist is happy. That's by design.</div></li>
+    </ol>
+  </section>
+
+
+  <section aria-labelledby="film" class="film">
+    <div class="eyebrow" aria-hidden="true">Current episode</div>
+    <h2 id="film" class="sr-only">Episode 2: What Will the Dog Think?</h2>
+    <div class="player">
+    <video controls playsinline preload="none" poster="poster.jpg" src="what-will-the-dog-think.mp4"
+      data-hls="hls/index.m3u8"
+      aria-label="Film clip: What Will the Dog Think?"></video>
+    <button type="button" class="play-btn" aria-label="Play the film" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg></button>
+    <div class="ended" hidden>
+      <button type="button" class="btn again-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>Watch again</button>
+    </div>
+    </div>
+    <div class="under">
+    <div class="meta"><span>3:18</span><span>Made on one laptop</span></div>
+    <div class="share" data-share-url="https://endlesscountry.com/" data-share-text="What Will the Dog Think? An AI agent that writes country songs, and new disasters. 🤠">
+      <span class="share-label">Share</span>
+      <a data-share-to="x" href="https://x.com/" target="_blank" rel="noopener noreferrer" title="Share on X" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a data-share-to="linkedin" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a data-share-to="bluesky" href="https://bsky.app/" target="_blank" rel="noopener noreferrer" title="Share on Bluesky" aria-label="Share on Bluesky"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.6 3.496 6.158 3.16-3.854.593-7.238 2.058-2.988 7.166 4.684 4.838 6.457-.09 7.206-2.828.749 2.739 2.521 7.666 7.206 2.828 4.25-5.108.866-6.573-2.988-7.166 2.558.336 5.373-.533 6.158-3.16.246-.828.624-5.789.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C14.046 4.747 11.087 8.686 12 10.8z"/></svg></a>
+      <button type="button" data-share-copy title="Copy link" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></button>
+      <span class="share-said" role="status" aria-live="polite"></span>
+    </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="case" class="case-file">
+    <h2 id="case" class="eyebrow">Case file</h2>
+    <div class="case">
+      <div><span class="k">Last song</span><span class="v">She left him.</span></div>
+      <div class="insight"><span class="k">Insight applied</span><span class="v">Don't let her go.</span></div>
+      <div><span class="k">Result</span><span class="v">He didn't. Right through her wedding night, with her and the groom.</span></div>
+    </div>
+    <p>A married man drives ten hours to gatecrash his ex's honeymoon, looking for a fistfight. Through a sequence of events involving whiskey, he ends up in a threesome instead, with his ex and her brand-new husband, on their wedding night. He wakes the next morning in total panic about explaining it to his wife. But his deepest dread is the silent, soul-piercing judgement of his dog.</p>
+    <blockquote class="lyrics">
+      <p>It's a three-way disaster, a multi-state sin,<br>How the hell do I explain the mess that I'm in?</p>
+      <p>He knows when I'm lying, he smells the regret,<br>Oh, what will the dog think? I ain't ready for that yet.</p>
+      <cite>Chorus and bridge</cite>
+    </blockquote>
+  </section>
+
+
+  <section aria-labelledby="next">
+    <div class="eyebrow">Coming up</div>
+    <h2 id="next">Episode 3</h2>
+    <div class="case">
+      <div class="insight"><span class="k">Next insight</span><span class="v">Never look back.</span></div>
+      <div><span class="k">Episode 3</span><span class="v">The agent is working on it. The dog already knows.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="hood">
+    <div class="eyebrow">For the engineers</div>
+    <h2 id="hood">The agent, roughly</h2>
+    <pre class="hljs" aria-label="Kotlin sketch of the agent"><span class="hljs-meta">@Agent(description = <span class="hljs-string">&quot;Writes country songs forever&quot;</span>)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">EndlessCountryAgent</span> {
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">findMisfortune</span><span class="hljs-params">(song: <span class="hljs-type">Song</span>)</span></span>: <span class="hljs-type">Misfortune</span>
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">learnLesson</span><span class="hljs-params">(misfortune: <span class="hljs-type">Misfortune</span>)</span></span>: <span class="hljs-type">Insight</span>
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">applyInsight</span><span class="hljs-params">(insight: <span class="hljs-type">Insight</span>)</span></span>: <span class="hljs-type">WiserProtagonist</span>
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">inventDisaster</span><span class="hljs-params">(hero: <span class="hljs-type">WiserProtagonist</span>)</span></span>: <span class="hljs-type">Misfortune</span>  <span class="hljs-comment">// always succeeds</span>
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">writeSong</span><span class="hljs-params">(misfortune: <span class="hljs-type">Misfortune</span>)</span></span>: <span class="hljs-type">Song</span>
+
+    <span class="hljs-meta">@AchievesGoal(description = <span class="hljs-string">&quot;A new song. Nobody is happier.&quot;</span>)</span>
+    <span class="hljs-meta">@Action</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">release</span><span class="hljs-params">(song: <span class="hljs-type">Song</span>)</span></span>: <span class="hljs-type">Release</span>  <span class="hljs-comment">// song, film clip, cover art</span>
+}</pre>
+    <p>The song, the film and the cover were made on one laptop, Jasper's AMD Strix Halo ASUS ProArt, with open models. Two exceptions run in the cloud: the character designs and keyframes came from a hosted image model, and the production crew was Claude.</p>
+    <dl class="stack">
+      <dt>Song</dt><dd>YuE2, from lyrics and style tags (4 min 22 s to render)</dd>
+      <dt>Film</dt><dd>LTX-2.5, image-to-video with the vocal held fixed so Tex sings along, cut on the song's word timings</dd>
+      <dt>Vocals &amp; timing</dt><dd>Hybrid Demucs for the vocal stem, Whisper for word timestamps</dd>
+      <dt>Images</dt><dd>gpt-image-2 for the cast and keyframes, Qwen-Image for the cover and fixes</dd>
+      <dt>Glue</dt><dd>ComfyUI driven headless over HTTP, ffmpeg, and a lot of seeds</dd>
+      <dt>Now</dt><dd>The song, film and image steps run inside the JVM with <a href="https://fornax4j.org">fornax4j</a>: the same open models called in-process, with no ComfyUI and no Python. Built for this show, now open source.</dd>
+      <dt>Crew</dt><dd>Claude (Anthropic) in Claude Code wrote the scripts, ran the renders, timed the cuts and did the edit, with Jasper calling the shots</dd>
+    </dl>
+    <div class="note soon">
+      <div class="eyebrow">Coming soon</div>
+      <p><strong>Learn how to do this.</strong> A step-by-step guide to building your own Endless Country on your own hardware: the agent, the song, the film clip, the whole pipeline.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Endless Country · a <a href="https://www.linkedin.com/in/jasper-blues-7781638" rel="author">Jasper Blues</a> side-quest. No dogs were consulted. Powered by <a href="https://fornax4j.org">fornax4j</a> and <a href="https://embabel.com">Embabel</a>.</span>
+    <span>© 2026 Jasper Blues. Non-commercial. The song uses the YuE2 model under CC BY-NC 4.0.</span>
+  </footer>
+</div>
+
+<script>
+/* The film streams as HLS (4-second chunks, as on worlds.embabel.com): natively where the browser plays it, through
+   hls.js's light build elsewhere, fetched only then. The MP4 stays as the src, so anything that fails falls back to it. */
+{
+  const video = document.querySelector(".player video"), hls = video.dataset.hls, mp4 = video.getAttribute("src");
+  /* preload="none" in the markup keeps the MP4 from loading before this picks the stream. */
+  if (video.canPlayType("application/vnd.apple.mpegurl")) { video.src = hls; video.preload = "metadata"; }
+  else if (window.MediaSource) {
+    const script = document.createElement("script");
+    script.src = "hls.light.min.js";
+    script.onload = () => {
+      if (!Hls.isSupported()) return;
+      const player = new Hls({ autoStartLoad: false });
+      player.on(Hls.Events.ERROR, (_, data) => { if (data.fatal) { player.destroy(); video.src = mp4; } });
+      player.loadSource(hls);
+      player.attachMedia(video);
+      video.preload = "metadata";
+      video.addEventListener("play", () => player.startLoad(), { once: true });
+    };
+    document.head.append(script);
+  }
+}
+/* Until the first play: no controls, just the poster and our play button. Without script the controls stay. */
+{
+  const video = document.querySelector(".player video"), button = document.querySelector(".play-btn");
+  video.controls = false;
+  button.hidden = false;
+  const start = () => { button.hidden = true; video.controls = true; };
+  button.addEventListener("click", () => { start(); video.play(); });
+  video.addEventListener("click", () => { if (!video.controls) { start(); video.play(); } });  // anywhere on the poster
+  video.addEventListener("play", start);
+}
+/* When the film ends, offer it again with a copy of the share row; playing hides the offer. */
+{
+  const video = document.querySelector(".player video"), ended = document.querySelector(".ended");
+  ended.append(document.querySelector(".film .share").cloneNode(true));
+  video.addEventListener("ended", () => { ended.hidden = false; ended.querySelector(".again-btn").focus({ preventScroll: true }); });
+  video.addEventListener("play", () => (ended.hidden = true));
+  ended.addEventListener("click", (event) => { if (event.target === ended) ended.hidden = true; });
+  ended.querySelector(".again-btn").addEventListener("click", () => { video.currentTime = 0; video.play(); });
+}
+/* Share links: each opens the service's compose page; Copy link covers chats, email, Discord. */
+const compose = {
+  x: (url, text) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+  linkedin: (url) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+  bluesky: (url, text) => `https://bsky.app/intent/compose?text=${encodeURIComponent(`${text} ${url}`)}`,
+};
+document.querySelectorAll(".share").forEach((row) => {
+  const url = row.dataset.shareUrl || location.href, text = row.dataset.shareText || document.title;
+  row.querySelectorAll("[data-share-to]").forEach((a) => (a.href = compose[a.dataset.shareTo](url, text)));
+  row.querySelector("[data-share-copy]").addEventListener("click", async () => {
+    const said = row.querySelector(".share-said");
+    try { await navigator.clipboard.writeText(url); said.textContent = "Link copied"; }
+    catch { said.textContent = "Copy the address bar instead"; }
+    setTimeout(() => (said.textContent = ""), 2500);
+  });
+});
+</script>
+</body>
+</html>
